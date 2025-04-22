@@ -45,14 +45,18 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("AllowAllWithCredentials", policy =>
+    {
+        policy
+            .SetIsOriginAllowed(_ => true) 
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); 
+    });
 });
 
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 
 // Register repositories
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
@@ -96,7 +100,7 @@ if (app.Environment.EnvironmentName.Contains(Environments.Development))
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowAllWithCredentials");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
