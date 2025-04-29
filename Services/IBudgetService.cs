@@ -8,12 +8,12 @@ namespace GeoSolucoesAPI.Services
 {
     public interface IBudgetService
     {
-        Task<decimal> ProcessCalc(CalcParameters calcParameters);
+        Task<CalcResponse> ProcessCalc(CalcParameters calcParameters);
 
         Task<BudgetDto> PostBudget(BudgetRequest budget);
         Task<BudgetDto> GetBudgetById(int budgetId);
         Task<BudgetDto> UpdateBudget(int budgetId, BudgetUpdate budget);
-
+        Task<AddressResponse> GetAddressByCep(string cep);
         Task<List<BudgetDto>> GetAllBudgets();
         Task<RemovedItem> DeleteBudget(int budgetId);
     }

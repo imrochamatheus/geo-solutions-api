@@ -45,18 +45,14 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllWithCredentials", policy =>
-    {
-        policy
-            .SetIsOriginAllowed(_ => true) 
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials(); 
-    });
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
 });
 
-
 builder.Services.AddControllers();
+
 
 // Register repositories
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();

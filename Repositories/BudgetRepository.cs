@@ -1,5 +1,7 @@
 ﻿using GeoSolucoesAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using ServiceManagement.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GeoSolucoesAPI.Repositories
 {
@@ -61,6 +63,8 @@ namespace GeoSolucoesAPI.Repositories
 
         public async Task<List<BudgetDbo>> GetAllBudgets()
         {
+            var t1 = _context.GetBudgetFull();
+            var sql = t1.ToQueryString();
             var budgetsList = _context.GetBudgetFull().ToList();
             return budgetsList;
         }

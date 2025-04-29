@@ -11,6 +11,6 @@ namespace GeoSolucoesAPI.Services
         //Task<List<CityDto>> SearchCitiesAsync(string query);
         Task<CityDto> AddCityAsync(CityDto cityDto);
         Task<RemovedItem> RemoveCityAsync(int id);
-        Task<bool> IsCityCoveredAsync(string cityName);
+        Task<bool> IsCityCoveredAsync(int id);
     }
 }

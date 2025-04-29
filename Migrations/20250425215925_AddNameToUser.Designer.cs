@@ -3,6 +3,7 @@ using System;
 using GeoSolucoesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GeoSolucoesAPI.Migrations
 {
     [DbContext(typeof(GeoSolutionsDbContext))]
-    partial class GeoSolutionsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250425215925_AddNameToUser")]
+    partial class AddNameToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,9 +236,6 @@ namespace GeoSolucoesAPI.Migrations
                     b.Property<decimal>("AreaSize")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("BudgetId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Confrontations")
                         .HasColumnType("integer");
 
@@ -262,11 +262,10 @@ namespace GeoSolucoesAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetId");
-
                     b.HasIndex("IntentionServiceId");
 
-                    b.HasIndex("ServiceTypeId");
+                    b.HasIndex("ServiceTypeId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -353,10 +352,6 @@ namespace GeoSolucoesAPI.Migrations
 
             modelBuilder.Entity("ServiceManagement.Models.BudgetDbo", b =>
                 {
-                    b.HasOne("ServiceTypeDbo", null)
-                        .WithMany("Budget")
-                        .HasForeignKey("BudgetId");
-
                     b.HasOne("ServiceManagement.Models.IntentionServiceDbo", "IntentionService")
                         .WithMany()
                         .HasForeignKey("IntentionServiceId")
@@ -364,8 +359,8 @@ namespace GeoSolucoesAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("ServiceTypeDbo", "ServiceType")
-                        .WithMany()
-                        .HasForeignKey("ServiceTypeId")
+                        .WithOne("Budget")
+                        .HasForeignKey("ServiceManagement.Models.BudgetDbo", "ServiceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

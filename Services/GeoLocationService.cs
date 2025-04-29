@@ -1,4 +1,5 @@
 ﻿using GeoSolucoesAPI.DTOs;
+using GeoSolucoesAPI.DTOs.BudgetResponse;
 using GeoSolucoesAPI.Models;
 using Google.Api.Gax.Grpc;
 using Google.Apis.Auth.OAuth2;
@@ -17,6 +18,7 @@ namespace GeoSolucoesAPI.Services
         {
             _httpClient = new HttpClient();
         }
+
 
         public async Task<decimal> GetDistanceFromStartEndPoint(StartPointDbo origin, DestinyDto destiny)
         {
@@ -145,6 +147,60 @@ namespace GeoSolucoesAPI.Services
 
                 throw;
             }
+
+        }
+
+        public async Task<AddressResponse> GetAddressByCep(string cep)
+        {
+            if (string.IsNullOrWhiteSpace(cep))
+                throw new ArgumentException("CEP não pode estar vazio.");
+
+            // Remove traços e espaços
+            var cleanedCep = cep.Replace("-", "").Trim();
+
+            if (cleanedCep.Length != 8 || !cleanedCep.All(char.IsDigit))
+                throw new ArgumentException("CEP inválido.");
+
+            var url = $"https://maps.googleapis.com/maps/api/geocode/json?address={cleanedCep}&key={"AIzaSyCNPIJ4r9_wIh7xZhX1qY9jsaXippYj8gA"}";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            using var json = JsonDocument.Parse(content);
+
+            var results = json.RootElement.GetProperty("results");
+
+            if (results.GetArrayLength() == 0)
+                return null;
+
+            var result = results[0];
+
+            var addressComponents = result.GetProperty("address_components");
+            string GetComponent(string type)
+            {
+                foreach (var component in addressComponents.EnumerateArray())
+                {
+                    var types = component.GetProperty("types").EnumerateArray().Select(t => t.GetString());
+                    if (types.Contains(type))
+                        return component.GetProperty("long_name").GetString();
+                }
+                return null;
+            }
+
+            var geometry = result.GetProperty("geometry").GetProperty("location");
+            var lat = geometry.GetProperty("lat").GetDouble();
+            var lng = geometry.GetProperty("lng").GetDouble();
+
+            return new AddressResponse()
+            {
+                Zipcode = cleanedCep,
+                Street = GetComponent("route"),
+                Number = int.TryParse(GetComponent("street_number"), out var num) ? num : (int?)null,
+                Neighborhood = GetComponent("sublocality") ?? GetComponent("political"),
+                City = GetComponent("administrative_area_level_2"),
+                State = GetComponent("administrative_area_level_1"),
+                Complement = GetComponent("subpremise")
+            };
 
         }
     }

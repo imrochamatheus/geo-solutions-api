@@ -9,6 +9,7 @@
     public enum EUnitOfMeasure
     {
         SquareMeter,
-        Hectare
+        Hectare,
+        Meter
     }
 }

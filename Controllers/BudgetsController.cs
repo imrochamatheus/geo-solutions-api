@@ -21,11 +21,11 @@ namespace GeoSolucoesAPI.Controllers
         }
 
         [HttpPost("calc")]
-        [ProducesResponseType(typeof(decimal), 200)]
+        [ProducesResponseType(typeof(CalcResponse), 200)]
         public async Task<IActionResult> ProcessCalculation(CalcParameters calcParameters)
         {
             var finalPrice = await _budgetService.ProcessCalc(calcParameters);
-            return Ok(finalPrice);
+            return Ok(finalPrice); ;
         }
 
 
@@ -69,5 +69,14 @@ namespace GeoSolucoesAPI.Controllers
             return Ok(budgetList);
         }
 
+        [HttpGet("address")]
+        [ProducesResponseType(typeof(AddressResponse), 200)]
+        public async Task<IActionResult> GetAddressByCep(string cep)
+        {
+            var address = await _budgetService.GetAddressByCep(cep);
+            return Ok(address);
+        }
+
     }
+
 }

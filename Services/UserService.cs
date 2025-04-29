@@ -25,6 +25,7 @@ namespace GeoSolucoesAPI.Services
 
             var user = new User
             {
+                Name = dto.Name,
                 Email = dto.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Cell = dto.Cell,
@@ -59,18 +60,44 @@ namespace GeoSolucoesAPI.Services
             return user;
         }
 
-        public async Task<bool> UpdateUser(int id, UserDTO dto)
+        public async Task<bool> UpdateUser(int id, UpdateUserDTO dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user == null) return false;
 
-            user.Email = dto.Email;
-            user.Cell = dto.Cell;
-            user.UserType = dto.UserType;
+            if (!string.IsNullOrWhiteSpace(dto.Email) && user.Email != dto.Email)
+            {
+                if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+                    throw new ArgumentException("O email informado já está em uso.");
+                user.Email = dto.Email;
+            }
 
-            if (!string.IsNullOrEmpty(dto.Password))
-                user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            if (!string.IsNullOrWhiteSpace(dto.Name))
+                user.Name = dto.Name;
 
+            if (!string.IsNullOrWhiteSpace(dto.Cell))
+            {
+                if (!IsValidCell(dto.Cell))
+                    throw new ArgumentException("Número de celular inválido.");
+                user.Cell = dto.Cell;
+            }
+
+            if (dto.UserType != 0)
+                user.UserType = dto.UserType;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ChangePassword(int userId, ChangePasswordDTO dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return false;
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.Password))
+                throw new ArgumentException("Senha atual incorreta.");
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
             await _context.SaveChangesAsync();
             return true;
         }

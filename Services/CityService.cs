@@ -136,9 +136,9 @@ namespace GeoSolucoesAPI.Services
             }
         }
 
-        public async Task<bool> IsCityCoveredAsync(string cityName)
+        public async Task<bool> IsCityCoveredAsync(int ibgeId)
         {
-            var city = await _cityRepository.GetByNameAsync(cityName);
+            var city = await _cityRepository.GetByIdAsync(ibgeId);
             return city != null;
         }
     }

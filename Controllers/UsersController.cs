@@ -69,7 +69,7 @@ namespace GeoSolucoesAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, UserDTO model)
+        public async Task<ActionResult> Update(int id, UpdateUserDTO model)
         {
             if (id != model.Id) return BadRequest();
 
@@ -77,6 +77,45 @@ namespace GeoSolucoesAPI.Controllers
             if (!success) return NotFound();
 
             return NoContent();
+        }
+
+        [HttpPut("edit-user")]
+        public async Task<ActionResult> UpdateProfile(UpdateUserDTO model)
+        {
+            var currentUserId = GetCurrentUserId();
+            model.Id = currentUserId;
+
+            try
+            {
+                var success = await _userService.UpdateUser(currentUserId, model);
+                if (!success) return NotFound();
+
+                var updatedUser = await _userService.GetById(currentUserId);
+                var newJwt = GenerateJwtToken(updatedUser);
+
+                return Ok(new { jwtToken = newJwt });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDTO model)
+        {
+            var currentUserId = GetCurrentUserId();
+            try
+            {
+                var success = await _userService.ChangePassword(currentUserId, model);
+                if (!success) return BadRequest("Usuário não encontrado ou senha atual incorreta.");
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -95,7 +134,9 @@ namespace GeoSolucoesAPI.Controllers
 
             var claims = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim("username", user.Name),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.UserType.ToString())
             });
 
@@ -115,6 +156,14 @@ namespace GeoSolucoesAPI.Controllers
         {
             public string SecretKey { get; set; }
             public int ExpirationHours { get; set; }
+        }
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+                return userId;
+            throw new UnauthorizedAccessException("Usuário não autorizado.");
         }
     }
 }

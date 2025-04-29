@@ -67,14 +67,14 @@ namespace GeoSolucoesAPI.Controllers
         }
 
         [HttpGet("coverage")]
-        public async Task<ActionResult<bool>> CheckCoverage([FromQuery] string cityName)
+        public async Task<ActionResult<bool>> CheckCoverage([FromQuery] int ibgeId)
         {
-            if (string.IsNullOrWhiteSpace(cityName))
+            if (ibgeId <= 0)
             {
-                return BadRequest("O nome da cidade é obrigatório.");
+                return BadRequest("O ID do IBGE é obrigatório.");
             }
 
-            var isCovered = await _cityService.IsCityCoveredAsync(cityName);
+            var isCovered = await _cityService.IsCityCoveredAsync(ibgeId);
             return Ok(isCovered);
         }
     }

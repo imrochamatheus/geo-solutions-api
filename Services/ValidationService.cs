@@ -34,18 +34,14 @@ namespace GeoSolucoesAPI.Services
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(calcParameters.Address?.Street))
-                    AddError("Street", "Por favor, especifique a rua");
-                if (string.IsNullOrWhiteSpace(calcParameters.Address?.Number))
-                    AddError("Number", "Por favor, especifiquee o número");
                 if (string.IsNullOrWhiteSpace(calcParameters.Address?.Neighborhood))
-                    AddError("Neighborhood", "Por favor, especifique o bairro");
+                    AddError("Neighborhood", "Especifique o bairro");
                 if (string.IsNullOrWhiteSpace(calcParameters.Address?.City))
-                    AddError("City", "Por favor, especifique a cidade");
+                    AddError("City", "Especifique a cidade");
                 if (string.IsNullOrWhiteSpace(calcParameters.Address?.State))
-                    AddError("State", "Por favor, especifique o estado");
+                    AddError("State", "Especifique o estado");
                 if (string.IsNullOrWhiteSpace(calcParameters.Address?.Country))
-                    AddError("Country", "Por favor, especifique o país");
+                    AddError("Country", "Especifique o país");
             }
 
             if (calcParameters.AreaSettings == null)
@@ -55,14 +51,14 @@ namespace GeoSolucoesAPI.Services
             else
             {
                 if (calcParameters.AreaSettings?.Area_Size <= 0)
-                    AddError("Area_Size", "Por favor, especifique o tamanho da área");
+                    AddError("Area_Size", "Especifique o tamanho da área");
             }
 
             if (calcParameters.ServiceTypeId <= 0)
-                AddError("ServiceTypeId", "Por favor, especifique o tipo de serviço");
+                AddError("ServiceTypeId", "Especifique o tipo de serviço");
 
             if (calcParameters.IntentionServiceId <= 0)
-                AddError("IntentionServiceId", "Por favor especifique a intenção de serviço");
+                AddError("IntentionServiceId", "Especifique a intenção de serviço");
 
             if (validationErrors.Count > 0)
                 throw GetError();
@@ -127,14 +123,14 @@ namespace GeoSolucoesAPI.Services
                 AddError("Price", "Preço incorreto.");
             }
 
-            if (budgetRequest.StartDate == default || budgetRequest.EndDate == default)
+          /*  if (budgetRequest.StartDate == default || budgetRequest.EndDate == default)
             {
                 AddError("Dates", "As datas de início e fim devem ser válidas.");
             }
             else if (budgetRequest.EndDate < budgetRequest.StartDate)
             {
                 AddError("Dates", "A data de término não pode ser anterior à data de início.");
-            }
+            }*/
 
             if (budgetRequest.BudgetAreaSettings == null)
             {
@@ -184,8 +180,8 @@ namespace GeoSolucoesAPI.Services
                 if (string.IsNullOrWhiteSpace(budgetRequest.Address.State))
                     AddError("State", "O estado deve ser informado.");
 
-                if (budgetRequest.Address.Number == null || budgetRequest.Address.Number <= 0)
-                    AddError("Number", "O número do endereço deve ser informado e maior que zero.");
+                //if (budgetRequest.Address.Number == null || budgetRequest.Address.Number <= 0)
+                //    AddError("Number", "O número do endereço deve ser informado e maior que zero.");
             }
 
             if (validationErrors.Count > 0)
