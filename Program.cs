@@ -18,12 +18,13 @@ using static GeoSolucoesAPI.Controllers.UsersController;
 using GeoSolucoesAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Add services to the container.
+// Register GeoSolutionsDbContext - Simplificado para evitar avisos
 builder.Services.AddDbContext<GeoSolutionsDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
@@ -42,16 +43,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// ✅ Configurar CORS para permitir qualquer origem, método e cabeçalho
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", policy =>
+    options.AddPolicy("AllowAllWithCredentials", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy
+            .SetIsOriginAllowed(_ => true) 
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); 
     });
 });
+
 
 builder.Services.AddControllers();
 
@@ -65,6 +68,7 @@ builder.Services.AddScoped<IDistanceRepository, DistanceRepository>();
 builder.Services.AddScoped<IHostingRepository, HostingRepository>();
 builder.Services.AddScoped<IStartPointRepository, StartPointRepository>();
 
+
 // Register services
 builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
 builder.Services.AddScoped<IIntentionServiceService, IntentionServiceService>();
@@ -77,18 +81,17 @@ builder.Services.AddScoped<IHostingService, HostingService>();
 builder.Services.AddScoped<IStartPointService, StartPointService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 
-// Swagger
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Refit client
 builder.Services
     .AddRefitClient<IDistanceApi>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://api.exemplo.com"));
 
 var app = builder.Build();
 
-// Pipeline
+// Configure the HTTP request pipeline.
 if (app.Environment.EnvironmentName.Contains(Environments.Development))
 {
     app.UseSwagger();
@@ -97,12 +100,9 @@ if (app.Environment.EnvironmentName.Contains(Environments.Development))
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-// ✅ Aplicar política CORS corretamente
-app.UseCors("AllowAllOrigins");
-
+app.UseCors("AllowAllWithCredentials");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
