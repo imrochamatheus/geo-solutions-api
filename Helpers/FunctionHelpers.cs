@@ -7,6 +7,8 @@
         public static decimal ConvertSquareMeterToHectare(this decimal SquareMeterSize) => SquareMeterSize / 10000;
         public static decimal ConvertToQuilometer(this decimal Meter) => Meter / 1000;
         public static decimal ConvertToMeter(this decimal Quilometer) => Quilometer * 1000;
+
+        public static float ConvertToMeterFloat(this float Quilometer) => Quilometer * 1000;
         public static string ContactAdm() => "Por favor, entre em contato com o administrador do sistema";
     }
 }

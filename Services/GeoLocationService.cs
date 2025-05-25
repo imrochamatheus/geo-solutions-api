@@ -24,12 +24,6 @@ namespace GeoSolucoesAPI.Services
         {
             try
             {
-
-                //[Logradouro], [Número], [Bairro], [Cidade], [Estado], [País]
-                //var originGeoLocation = await GetGeoLocation("32044-160");
-                //var destinyGeoLocation = await GetGeoLocation("32315-000");
-
-
                 string originString = $"{origin.Street} {origin.Number} {origin.Neighborhood} {origin.City} {origin.State} {origin.Country}";
                 string destinyString = $"{destiny.Street} {destiny.Number} {destiny.Neighborhood} {destiny.City} {destiny.State} {destiny.Country}";
 
@@ -108,13 +102,10 @@ namespace GeoSolucoesAPI.Services
 
         }
 
-        //private async Task<(double lati, double longi)> GetGeoLocation(string cep)
         private async Task<(double lati, double longi)> GetGeoLocation(string end)
         {
             try
             {
-
-                //string url = $"https://maps.googleapis.com/maps/api/geocode/json?address={cep}&key={"AIzaSyCNPIJ4r9_wIh7xZhX1qY9jsaXippYj8gA"}";
 
                 string url = $"https://maps.googleapis.com/maps/api/geocode/json?address={end}&key={"AIzaSyCNPIJ4r9_wIh7xZhX1qY9jsaXippYj8gA"}";
                 HttpResponseMessage response = await _httpClient.GetAsync(url);

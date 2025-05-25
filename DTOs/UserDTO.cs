@@ -6,7 +6,7 @@ namespace GeoSolucoesAPI.DTOs
 {
     public class UserDTO
     {
-        public int? Id { get; set; }
+        // public int? Id { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatório.")]
         public string Name { get; set; } 
@@ -57,5 +57,12 @@ namespace GeoSolucoesAPI.DTOs
         [Required(ErrorMessage = "A nova senha é obrigatória.")]
         [MinLength(8, ErrorMessage = "A nova senha deve ter no mínimo 8 caracteres.")]
         public string NewPassword { get; set; }
+    }
+    public class ForgotPasswordDTO
+    {
+        [MinLength(8, ErrorMessage = "A nova senha deve ter no mínimo 8 caracteres.")]
+        public string NewPassword { get; set; }
+
+        public string Code { get; set; }
     }
 }

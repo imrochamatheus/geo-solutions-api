@@ -1,5 +1,7 @@
-﻿using GeoSolucoesAPI.DTOs;
+﻿using Castle.Core.Smtp;
+using GeoSolucoesAPI.DTOs;
 using GeoSolucoesAPI.Models;
+using GeoSolucoesAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
@@ -8,10 +10,12 @@ namespace GeoSolucoesAPI.Services
     public class UserService : IUserService
     {
         private readonly GeoSolutionsDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public UserService(GeoSolutionsDbContext context)
+        public UserService(GeoSolutionsDbContext context, IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         public async Task<User> CreateUser(UserDTO dto)
@@ -102,6 +106,33 @@ namespace GeoSolucoesAPI.Services
             return true;
         }
 
+        public async Task<bool> ValidateCodeAndChangePassword(int userId, ForgotPasswordDTO dto)
+        {
+
+            var forgotEntry = await _context.Set<Forgot>()
+                .Where(f => f.UserId == userId && f.Code == dto.Code)
+                .OrderByDescending(f => f.RequestedAt)
+                .FirstOrDefaultAsync();
+
+            if (forgotEntry == null)
+                throw new ArgumentException("Código de Verificacao Inválido");
+            if(DateTime.UtcNow - forgotEntry.RequestedAt > TimeSpan.FromMinutes(20))
+                throw new ArgumentException("O código expirou. Solicite um novo.");
+
+            var result = await ChangeForgotPassword(userId, dto);
+            return result;
+
+        }
+        public async Task<bool> ChangeForgotPassword(int userId, ForgotPasswordDTO dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return false;
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -110,6 +141,28 @@ namespace GeoSolucoesAPI.Services
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return true;
+        }
+        public async Task<int> RegisterForgotCode(string email)
+        {
+            var user =  _context.Users.FirstOrDefault(u=> u.Email == email);
+            if (user == null)
+                throw new ArgumentException("Usuário com o e-mail informado não foi encontrado");
+            var code = new Random().Next(10000, 99999).ToString();
+            var forgotEntry = new Forgot
+            {
+                UserId = user.Id,
+                Code = code,
+                RequestedAt = DateTime.UtcNow
+
+            };
+
+            _context.Set<Forgot>().Add(forgotEntry);
+            await _context.SaveChangesAsync();
+
+            var message = $"Olá {user.Name},<br><br>Seu código de recuperação é: <strong>{code}</strong><br>Ele expira em 20 minutos.";
+            await _emailService.SendEmailAsync(user.Email, "Código de Recuperação de Senha", message);
+
+            return user.Id;
         }
 
         private bool IsValidCell(string cell)

@@ -45,6 +45,36 @@ namespace GeoSolucoesAPI.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult> ForgotPassword([FromBody] string email)
+        {
+            try
+            {
+                var result = await _userService.RegisterForgotCode(email);
+                if (result > 0)
+                    return Ok(new { mensagem = "Código de recuperação gerado com sucesso.", userID = result });
+                return BadRequest("Não foi possível gerar o código.");
+            } 
+            catch (ArgumentException ex)
+            { return BadRequest(ex.Message); }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("verify-code/{userId}")]
+        public async Task<ActionResult> VerifyCodeAndResetPassword(int userId, [FromBody] ForgotPasswordDTO dto)
+        {
+            try
+            {
+                var sucess = await _userService.ValidateCodeAndChangePassword(userId, dto);
+                if (sucess)
+                    return Ok(new { mensagem = "Senha Alterada com sucesso" });
+                return BadRequest("Não foi possível alterar sua senha");
+            }
+            catch (ArgumentException ex)
+            { return BadRequest(ex.Message); }
+        }
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Create(UserDTO model)
         {
@@ -71,7 +101,7 @@ namespace GeoSolucoesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, UpdateUserDTO model)
         {
-            if (id != model.Id) return BadRequest();
+           // if (id != model.Id) return BadRequest();
 
             var success = await _userService.UpdateUser(id, model);
             if (!success) return NotFound();

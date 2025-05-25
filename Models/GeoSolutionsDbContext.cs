@@ -24,6 +24,7 @@ namespace GeoSolucoesAPI.Models
         public DbSet<CityDbo> Cities { get; set; }
         public DbSet<StartPointDbo> StartPoints { get; set; }
         public DbSet<ConfrontationDbo> Confrontations { get; set; }
+        public DbSet<Forgot> Forgets { get; set; }
 
         public IQueryable<BudgetDbo> GetBudgetFull()
             => Budgets

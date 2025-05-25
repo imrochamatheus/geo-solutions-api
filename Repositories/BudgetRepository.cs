@@ -26,10 +26,10 @@ namespace GeoSolucoesAPI.Repositories
             return startPoints;
         }
 
-        public async Task<HostingDbo> GetHosting()
+        public async Task<List<HostingDbo>> GetHosting()
         {
-            var hosting = _context.Hostings.FirstOrDefault();
-            return hosting;
+            var hostingList = _context.Hostings.ToList();
+            return hostingList;
         }
 
         public async Task<List<DistanceDbo>> GetDistance()

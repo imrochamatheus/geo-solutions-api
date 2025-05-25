@@ -55,6 +55,10 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.12.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.14, )"
@@ -72,6 +76,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.14, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.12.0, )"
             },
             "Moq": {
               "target": "Package",
@@ -105,6 +113,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.16, 8.0.16]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.16, 8.0.16]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.16, 8.0.16]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -113,7 +135,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.408/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.410/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

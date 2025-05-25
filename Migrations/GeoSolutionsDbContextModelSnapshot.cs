@@ -91,6 +91,29 @@ namespace GeoSolucoesAPI.Migrations
                     b.ToTable("Distances");
                 });
 
+            modelBuilder.Entity("GeoSolucoesAPI.Models.Forgot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Forgot");
+                });
+
             modelBuilder.Entity("GeoSolucoesAPI.Models.HostingDbo", b =>
                 {
                     b.Property<int>("Id")

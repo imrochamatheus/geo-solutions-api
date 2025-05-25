@@ -12,5 +12,7 @@ namespace GeoSolucoesAPI.Services
         Task<bool> UpdateUser(int id, UpdateUserDTO dto);
         Task<bool> ChangePassword(int id, ChangePasswordDTO dto);
         Task<bool> DeleteUser(int id);
+        Task<int> RegisterForgotCode(string email);
+        Task<bool> ValidateCodeAndChangePassword(int userId, ForgotPasswordDTO dto);
     }
 }

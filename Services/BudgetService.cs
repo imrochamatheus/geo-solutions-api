@@ -168,28 +168,35 @@ namespace GeoSolucoesAPI.Services
             var finalDistance = await _geoLocationService.GetDistanceFromStartEndPoint(startPoint, calcParameters.Address);
 
 
+            //TODO: Ajustar hospedagem com base no parametro
+
+
+
             //Hospedagem
             if (height - 1 > 0)
             {
-                if (hosting is null)
+                float finalDistanceFloat = (float)finalDistance;
+                var actualHosting = hosting.FirstOrDefault(x => (finalDistanceFloat >= x.DistanteMin.ConvertToMeterFloat() && x.DistanteMax.ConvertToMeterFloat() == 0)
+                                                          || (x.DistanteMin.ConvertToMeterFloat() == 0 && finalDistanceFloat <= x.DistanteMax.ConvertToMeterFloat())
+                                                          || (x.DistanteMin.ConvertToMeterFloat() <= finalDistanceFloat && finalDistanceFloat <= x.DistanteMax.ConvertToMeterFloat()));
+                if (actualHosting is not null)
                 {
-                    AddError("Hosting", $"O serviço possui mais de uma diária, mas nenhum valor de hospedagem foi cadastrado. {FunctionHelpers.ContactAdm()}");
-                    throw GetError();
+                    finalPrice += actualHosting.Price > 0 ? actualHosting.Price * (height - 1) : finalPrice;
                 }
-                finalPrice += hosting.Price > 0 ? hosting.Price * height : finalPrice;
+
 
             }
-
-            //Deslocamento
+            //TODO: Ajustar deslocamento(nao usar termo area)
+            
             if (distanceRange.IsNotNullAndAny())
             {
-                var multiplierDistance = distanceRange.FirstOrDefault(x => (finalDistance >= x.AreaMin && x.AreaMax == 0)
-                                                                          || (x.AreaMin == 0 && finalDistance <= x.AreaMax)
-                                                                          || (x.AreaMin <= finalDistance && finalDistance <= x.AreaMax));
+                var multiplierDistance = distanceRange.FirstOrDefault(x => (finalDistance >= x.AreaMin.ConvertHectarToSquareMeter() && x.AreaMax.ConvertHectarToSquareMeter() == 0)
+                                                                          || (x.AreaMin.ConvertHectarToSquareMeter() == 0 && finalDistance <= x.AreaMax.ConvertHectarToSquareMeter())
+                                                                          || (x.AreaMin.ConvertHectarToSquareMeter() <= finalDistance && finalDistance <= x.AreaMax.ConvertHectarToSquareMeter()));
 
-                if (multiplierDistance is not null && multiplierDistance.Multiplier > 1)
+                if (multiplierDistance is not null)
                 {
-                    finalPrice += multiplierDistance.Multiplier * finalDistance.ConvertToQuilometer();
+                    finalPrice += (multiplierDistance.Multiplier * finalDistance.ConvertToQuilometer()) * 2;
                 }
 
             }

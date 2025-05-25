@@ -12,7 +12,7 @@ namespace GeoSolucoesAPI.Repositories
         Task DeleteBudget(BudgetDbo budgetId);
         Task<StartPointDbo> GetStartPoint();
         Task<List<ConfrontationDbo>> GetConfrontations();
-        Task<HostingDbo> GetHosting();
+        Task<List<HostingDbo>> GetHosting();
         Task<List<DistanceDbo>> GetDistance();
     }
 }

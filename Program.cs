@@ -19,6 +19,7 @@ using GeoSolucoesAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add services to the container.
 // Register GeoSolutionsDbContext - Simplificado para evitar avisos
@@ -45,18 +46,14 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllWithCredentials", policy =>
-    {
-        policy
-            .SetIsOriginAllowed(_ => true) 
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials(); 
-    });
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
 });
 
-
 builder.Services.AddControllers();
+
 
 // Register repositories
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
