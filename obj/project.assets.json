@@ -4670,11 +4670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/GeoSolucoesAPI.csproj",
+      "projectUniqueName": "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj",
       "projectName": "GeoSolucoesAPI",
-      "projectPath": "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/GeoSolucoesAPI.csproj",
+      "projectPath": "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj",
       "packagesPath": "/home/cliente/.nuget/packages/",
-      "outputPath": "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/obj/",
+      "outputPath": "/home/cliente/Projects/estudos/geo-solutions-api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/cliente/.nuget/NuGet/NuGet.Config"
