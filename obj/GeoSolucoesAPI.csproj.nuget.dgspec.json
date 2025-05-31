@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/GeoSolucoesAPI.csproj": {}
+    "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj": {}
   },
   "projects": {
-    "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/GeoSolucoesAPI.csproj": {
+    "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/GeoSolucoesAPI.csproj",
+        "projectUniqueName": "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj",
         "projectName": "GeoSolucoesAPI",
-        "projectPath": "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/GeoSolucoesAPI.csproj",
+        "projectPath": "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj",
         "packagesPath": "/home/cliente/.nuget/packages/",
-        "outputPath": "/home/cliente/Projects/estudos/pmv-ads-2025-1-e5-proj-empext-t1-pmv-ads-2025-1-e5-proj-geo-solucoes/codigo-fonte/backend/GeoSolucoesAPI/GeoSolucoesAPI/obj/",
+        "outputPath": "/home/cliente/Projects/estudos/geo-solutions-api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/cliente/.nuget/NuGet/NuGet.Config"
@@ -57,7 +57,7 @@
             },
             "MailKit": {
               "target": "Package",
-              "version": "[4.12.0, )"
+              "version": "[4.12.1, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -77,6 +77,10 @@
               "target": "Package",
               "version": "[8.0.14, )"
             },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.12.0, )"
+            },
             "Moq": {
               "target": "Package",
               "version": "[4.20.72, )"
@@ -84,10 +88,6 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[8.0.11, )"
-            },
-            "QuestPDF": {
-              "target": "Package",
-              "version": "[2025.5.0, )"
             },
             "Refit": {
               "target": "Package",
