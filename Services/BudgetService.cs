@@ -26,20 +26,22 @@ namespace GeoSolucoesAPI.Services
         private readonly IServiceTypeRepository _ServiceTypeRepository;
         private readonly IGeoLocationService _geoLocationService;
         private readonly IValidationService _validationService;
+        private readonly IEmailService _emailService;
         public BudgetService(IBudgetRepository budgetRepository
             , IServiceTypeRepository serviceTypeRepository
             , IGeoLocationService geoLocationService
-            , IValidationService validationService)
+            , IValidationService validationService
+            , IEmailService emailService)
         {
             _budgetRepository = budgetRepository;
             _ServiceTypeRepository = serviceTypeRepository;
             _geoLocationService = geoLocationService;
             _validationService = validationService;
+            _emailService = emailService;
         }
 
         public async Task<BudgetDto> PostBudget(BudgetRequest budget)
         {
-
             try
             {
                 _validationService.BudgetValidation(budget);
@@ -53,7 +55,6 @@ namespace GeoSolucoesAPI.Services
                 ValidationException GetError()
                     => new("Erro durante orçamento", validationErrors);
 
-
                 var serviceType = await _ServiceTypeRepository.GetByIdAsync(budget.ServiceTypeId);
 
                 if (serviceType is null)
@@ -63,7 +64,6 @@ namespace GeoSolucoesAPI.Services
                 }
 
                 var intentionService = serviceType.IntentionServices.FirstOrDefault(x => x.Id == budget.IntentionServiceId);
-
 
                 if (intentionService is null)
                 {
@@ -97,14 +97,22 @@ namespace GeoSolucoesAPI.Services
                 var budgetCreated = await _budgetRepository.PostBudget(budgetDbo);
                 var budgetCreatedDto = this.ConvertBudgetDboToDto(budgetCreated);
 
+                // Gerar PDF e enviar por e-mail
+                var pdfBytes = PdfHelper.GenerateBudgetPdf(budgetCreatedDto);
+                                await _emailService.SendEmailWithAttachmentAsync(
+                    budgetCreatedDto.User.Email,
+                    "Orçamento gerado",
+                    "<p>Segue em anexo o orçamento solicitado.</p>",
+                    pdfBytes,
+                    "orcamento.pdf"
+                );
+
                 return budgetCreatedDto;
             }
             catch (Exception e)
             {
-
                 throw e;
             }
-
         }
 
         public async Task<CalcResponse> ProcessCalc(CalcParameters calcParameters)
@@ -187,7 +195,7 @@ namespace GeoSolucoesAPI.Services
 
             }
             //TODO: Ajustar deslocamento(nao usar termo area)
-            
+
             if (distanceRange.IsNotNullAndAny())
             {
                 var multiplierDistance = distanceRange.FirstOrDefault(x => (finalDistance >= x.AreaMin.ConvertHectarToSquareMeter() && x.AreaMax.ConvertHectarToSquareMeter() == 0)
@@ -218,7 +226,7 @@ namespace GeoSolucoesAPI.Services
                     }
                 }
             }
-            return new CalcResponse() { CalcParametersResponse =  finalPrice.ToString("C", new CultureInfo("pt-BR")) };
+            return new CalcResponse() { CalcParametersResponse = finalPrice.ToString("C", new CultureInfo("pt-BR")) };
 
         }
 
@@ -234,7 +242,7 @@ namespace GeoSolucoesAPI.Services
             ValidationException GetError()
                 => new("Erro durante remoção do orçamento", validationErrors);
 
-            if(budgetId == 0)
+            if (budgetId == 0)
             {
                 AddError("Orçamento", $"Selecione um orçamento válido");
                 throw GetError();
@@ -316,7 +324,7 @@ namespace GeoSolucoesAPI.Services
                     Description = budgetDbo.IntentionService.Description,
                     Limit_Area = budgetDbo.IntentionService.Limit_Area
                 }
-                
+
             };
             return budgetDto;
         }
@@ -348,7 +356,7 @@ namespace GeoSolucoesAPI.Services
             return budgetDbo;
         }
 
-        private BudgetDbo ConvertBudgetUpdateToDbo(int budgetId,BudgetUpdate budgetUpdate)
+        private BudgetDbo ConvertBudgetUpdateToDbo(int budgetId, BudgetUpdate budgetUpdate)
         {
             var budgetDbo = new BudgetDbo()
             {
@@ -411,7 +419,7 @@ namespace GeoSolucoesAPI.Services
 
                 }
                 var intentionService = serviceType.IntentionServices.FirstOrDefault(x => x.Id == budget.IntentionServiceId);
- 
+
 
                 if (intentionService is null)
                 {
@@ -492,7 +500,7 @@ namespace GeoSolucoesAPI.Services
 
         }
 
-        public async  Task<AddressResponse> GetAddressByCep(string cep)
+        public async Task<AddressResponse> GetAddressByCep(string cep)
         {
             var validationErrors = new List<ValidationError>();
             void AddError(string field, string message)
