@@ -16,8 +16,10 @@ using System.Text;
 
 using static GeoSolucoesAPI.Controllers.UsersController;
 using GeoSolucoesAPI.Middlewares;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Repositórios
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();

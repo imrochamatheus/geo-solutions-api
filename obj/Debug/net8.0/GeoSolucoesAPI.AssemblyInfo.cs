@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GeoSolucoesAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9341159c475e2c8f519bebf9fc51681b6119c9b0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82b7307346fc8cf602cc7cbbbc9734e1f50ba54a")]
 [assembly: System.Reflection.AssemblyProductAttribute("GeoSolucoesAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GeoSolucoesAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
