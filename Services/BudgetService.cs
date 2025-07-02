@@ -176,20 +176,15 @@ namespace GeoSolucoesAPI.Services
             var finalDistance = await _geoLocationService.GetDistanceFromStartEndPoint(startPoint, calcParameters.Address);
 
 
-            //TODO: Ajustar hospedagem com base no parametro
-
-
 
             //Hospedagem
             if (height - 1 > 0)
             {
                 float finalDistanceFloat = (float)finalDistance;
-                var actualHosting = hosting.FirstOrDefault(x => (finalDistanceFloat >= x.DistanteMin.ConvertToMeterFloat() && x.DistanteMax.ConvertToMeterFloat() == 0)
-                                                          || (x.DistanteMin.ConvertToMeterFloat() == 0 && finalDistanceFloat <= x.DistanteMax.ConvertToMeterFloat())
-                                                          || (x.DistanteMin.ConvertToMeterFloat() <= finalDistanceFloat && finalDistanceFloat <= x.DistanteMax.ConvertToMeterFloat()));
+                var actualHosting = hosting.FirstOrDefault(x => x.DistanteMin.ConvertToMeterFloat() <= finalDistanceFloat && finalDistanceFloat <= x.DistanteMax.ConvertToMeterFloat());
                 if (actualHosting is not null)
                 {
-                    finalPrice += actualHosting.Price > 0 ? actualHosting.Price * (height - 1) : finalPrice;
+                    finalPrice += actualHosting.Price > 0 ? (actualHosting.Price * (height - 1)) : finalPrice;
                 }
 
 
@@ -198,13 +193,11 @@ namespace GeoSolucoesAPI.Services
 
             if (distanceRange.IsNotNullAndAny())
             {
-                var multiplierDistance = distanceRange.FirstOrDefault(x => (finalDistance >= x.AreaMin.ConvertHectarToSquareMeter() && x.AreaMax.ConvertHectarToSquareMeter() == 0)
-                                                                          || (x.AreaMin.ConvertHectarToSquareMeter() == 0 && finalDistance <= x.AreaMax.ConvertHectarToSquareMeter())
-                                                                          || (x.AreaMin.ConvertHectarToSquareMeter() <= finalDistance && finalDistance <= x.AreaMax.ConvertHectarToSquareMeter()));
+                var multiplierDistance = distanceRange.FirstOrDefault(x => x.AreaMin.ConvertToMeter() <= finalDistance && finalDistance <= x.AreaMax.ConvertToMeter());
 
                 if (multiplierDistance is not null)
                 {
-                    finalPrice += (multiplierDistance.Multiplier * finalDistance.ConvertToQuilometer()) * 2;
+                    finalPrice += (multiplierDistance.Multiplier * finalDistance.ConvertToQuilometer() * 2);
                 }
 
             }
@@ -214,15 +207,14 @@ namespace GeoSolucoesAPI.Services
             {
                 if (confrontation.IsNotNullAndAny())
                 {
-                    var confrontationSelected = confrontation.FirstOrDefault(x => ((finalDistance >= x.AreaMin && x.AreaMax == 0)
-                                                                          || (x.AreaMin == 0 && finalDistance <= x.AreaMax)
-                                                                          || (x.AreaMin >= finalDistance && finalDistance <= x.AreaMax))
+
+                    var confrontationSelected = confrontation.FirstOrDefault(x => x.AreaMin.ConvertToMeter() <= finalDistance && finalDistance <= x.AreaMax.ConvertToMeter()
                                                                           && x.UrbanConfrontation == intentionService.UrbanConfrontation
                                                                           && x.RuralConfrontation == intentionService.RuralConfrontation);
 
                     if (confrontationSelected is not null)
                     {
-                        finalPrice += confrontationSelected.Price * calcParameters.Confrontations;
+                        finalPrice += (confrontationSelected.Price * calcParameters.Confrontations);
                     }
                 }
             }

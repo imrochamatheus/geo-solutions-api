@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj": {}
+    "C:\\Users\\Vitor Oliveira\\source\\repos\\prod-back-geo\\GeoSolucoesAPI.csproj": {}
   },
   "projects": {
-    "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj": {
+    "C:\\Users\\Vitor Oliveira\\source\\repos\\prod-back-geo\\GeoSolucoesAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Vitor Oliveira\\source\\repos\\prod-back-geo\\GeoSolucoesAPI.csproj",
         "projectName": "GeoSolucoesAPI",
-        "projectPath": "/home/cliente/Projects/estudos/geo-solutions-api/GeoSolucoesAPI.csproj",
-        "packagesPath": "/home/cliente/.nuget/packages/",
-        "outputPath": "/home/cliente/Projects/estudos/geo-solutions-api/obj/",
+        "projectPath": "C:\\Users\\Vitor Oliveira\\source\\repos\\prod-back-geo\\GeoSolucoesAPI.csproj",
+        "packagesPath": "C:\\Users\\Vitor Oliveira\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Vitor Oliveira\\source\\repos\\prod-back-geo\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/cliente/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Vitor Oliveira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -113,20 +116,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -135,7 +124,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.410/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
