@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="../buildMultiTargeting/GeoSolucoesAPI.props" />
+  <Import Project="..\buildMultiTargeting\GeoSolucoesAPI.props" />
 </Project>
