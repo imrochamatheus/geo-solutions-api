@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GeoSolucoesAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcc105eaf6009cb61d44414aa1d353283e7f424d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1425cb732bb6ed29e6f3d1b5646d8fa939e99dc6")]
 [assembly: System.Reflection.AssemblyProductAttribute("GeoSolucoesAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GeoSolucoesAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
