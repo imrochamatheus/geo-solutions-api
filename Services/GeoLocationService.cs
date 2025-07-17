@@ -31,20 +31,6 @@ namespace GeoSolucoesAPI.Services
                 var destinyGeoLocation = await GetGeoLocation(Uri.EscapeDataString(destinyString));
 
 
-                //string jsonCredentials = @"{
-                //  ""type"": ""service_account"",
-                //  ""project_id"": ""glass-arcanum-456502-d5"",
-                //  ""private_key_id"": ""63d4835b825f8f0f1482998aebb06fa21ff02934"",
-                //  ""private_key"": ""-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDBGf8bjXPAKuUK\nTIC8WsaZ/vTmtJivme12gtvg5qZVSfSaTyQVnyFheI1EQEeRK5rHj00msj8SAWh9\nUKOLJBZvwaRf0oR7rTz9GyiG6M8tjoyvszkEO6KljtJ30OgZhUiQlPNM1H5uZUrM\nTOu7HXoaODq6AqD2RDWfkmS3q358bgVW8uWe5/AOkJWLHQvyo0JVOnStTxfVfUjK\nlugYom7HhaP8jfgOnKdM/WPDTrl7SA0WPMBBbpjBBt+vAouGPYZTE90oYE7s2Owv\nB/Zkfh1nFWxGzc7UGYVKgkX3Bsq4FgC3nD7ss20eP8LzR0iRXxPCXk5BZ9z/KcWc\nhrNm1HyFAgMBAAECggEAJLwg02mD+S1P2Dc4kFyGhppBlbgKifFzAsYfNTg7sWL5\n1Pc0Sqa0r3nDChZeZwgQEGG7EB79r5uz+I8EJb6uRAFnF1GRoYOR5Car/YpBi42g\nRvaF5L/Bj9RNRrznwp8f8F1dsaKFENRVN+t0NusDJQTIa0V/wIm2V85+OZC25c2l\nknn1y/DLj6r7UWntWVcJ/TGtXeToNhu9dHP8zPWBJIKyyu4yhgyOyckndCJORRH1\n3qlu9/97VCaP6yQcVwsK1SSa8ZAtjlDVjhwI3oDGK5GnmPBXjYzB9rP6zCrzXV0u\nM76ZczcSdcQXxqJUHDbYaE3tHEgULqF2knl+y559IQKBgQDtF9Z2VqtI2SzKZGfL\nqlxu309lh2rGMUDj6Yxp6Ytp0BpXQb9M3oxcK4cGQKMRS+CqKvfCZSl+t3ZO8EUu\n3rYqyEkkwV+yVhIaTcYbJQvCoZaKwOi2HZfGVps2IsF0UaeIbqIylV7+ycoqqFQq\n0rlNuVxmLSnWQ1aam+u7hEx0lQKBgQDQgBabnaTHJiSU8fkmTVcnUG5b0XaWGXuI\nbbyn6Ky3SdKol+vY+38a8StFDzydSNRo3wZ+34PleBvCg4qVUCleWfb6bywUEqgl\nRwTU5vnEyd9yMGfIDLr7gaqPaQz5AgB1/KM/5N2xbRPqrabJ4A5owlsArx8qVZNt\nnSvI5FJ8MQKBgQCJU+1czgaYQ3K2KEIWra6saZxLaoxmD9FOMdCq6CNgPrGDKQnt\nNFqIaI3lCTtqoVCYQBsR9hZ61zknr/Pimg1Z6nizWW5clY4WvkWpI2QUcBQKeoJQ\nOgPXVgLA8JCtFz66v5ojQnGrkqYO30EhLL04T809QZuiB476LqX0D0VZoQKBgQCq\n3GyqddN0x9Muo+Sy+Ko1M3pckBiIBLXxJUx2pPv07/BL7MN/ewm8QGpfG49mrSo0\nDqA6FFz4DSdijX1hwuFDyqHUtIoAoRFeCwbwmZ+RHoWYBAboL1aDiM0G3OWeoX9T\nMQdu8tSh82tg45FM2em0+6CrvNbjUGGScDxTUpgt4QKBgAMn0ywe56ocL0v/G5Fo\njeoMOkniU+yrV8WBQGlJKlFtsaiI6h2W+7HDGhuNdDJSXm2qhIfWE68q/kzJlqR6\ngJeurFy87MP4RY4Dc5WyPl0xdnWYt4E0HAOxNJGhOstUKBWfH0aZ7A4mvxj+cF25\np9i3gpYqSC2Qdxgfnwg/MCYx\n-----END PRIVATE KEY-----\n"",
-                //  ""client_email"": ""conta-teste@glass-arcanum-456502-d5.iam.gserviceaccount.com"",
-                //  ""client_id"": ""116991096208423079053"",
-                //  ""auth_uri"": ""https://accounts.google.com/o/oauth2/auth"",
-                //  ""token_uri"": ""https://oauth2.googleapis.com/token"",
-                //  ""auth_provider_x509_cert_url"": ""https://www.googleapis.com/oauth2/v1/certs"",
-                //  ""client_x509_cert_url"": ""https://www.googleapis.com/robot/v1/metadata/x509/conta-teste%40glass-arcanum-456502-d5.iam.gserviceaccount.com"",
-                //  ""universe_domain"": ""googleapis.com""
-                //}";
-
                 string jsonCredentials = @"{
                           ""type"": ""service_account"",
                           ""project_id"": ""geosolutionsroutes"",
@@ -123,7 +109,6 @@ namespace GeoSolucoesAPI.Services
             try
             {
 
-                //string url = $"https://maps.googleapis.com/maps/api/geocode/json?address={end}&key={"AIzaSyCNPIJ4r9_wIh7xZhX1qY9jsaXippYj8gA"}";
                 string url = $"https://maps.googleapis.com/maps/api/geocode/json?address={end}&key={"AIzaSyDKjNQ4LFm01o93_xLsVAGlCVmf4yE6ezU"}";
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
 
